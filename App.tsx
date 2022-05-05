@@ -8,27 +8,17 @@
  * @format
  */
 
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './src/screens/Home'
-
 import React from 'react';
-import {
-  Text,
-  View,
-} from 'react-native';
-import LoginScreen from './src/screens/Login';
+import { RoutesNavigator } from './src/routes';
+import { AuthProvider } from './src/contexts/auth';
 
 const App = () => {
 
-  const Stack = createNativeStackNavigator();
-  
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Login" component={LoginScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <AuthProvider>
+      <RoutesNavigator />
+    </AuthProvider>
   );
 };
 

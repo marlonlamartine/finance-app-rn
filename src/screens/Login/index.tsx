@@ -1,47 +1,46 @@
-import React, { useState } from "react";
-import { ActivityIndicator, Alert, Button, Text } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Button } from "react-native";
 import { useAuthContext } from "../../contexts/auth";
 import { Background, Container, Input, LoginButton } from "./style";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { authentication } from "../../services/auth-service";
-import apiClient from "../../services/api-service";
+import { User } from "../../types/routes";
 
 const LoginScreen = () => {
 
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const { user, setUser } = useAuthContext();
-    const [loading, setLoading] = useState(false)
-    const [erro, setErro] = useState('');
     const navigation = useNavigation();
 
-    if (user?.token) {
-        //navigation.navigate(HomeScreen);
-        console.log('tem token')
-    }
+    useEffect(() => {
+        if (user?.token) {
+            navigation.dispatch(CommonActions.reset({
+                index: 1,
+                routes: [{
+                    name: 'Home',
+                    params:
+                    {
+                        token: user.token,
+                        name: user.name,
+                        email: user.email
+                    }
+                }],
+            }));
+        }
+    }, [user, navigation])
 
     const handleLogin = async () => {
-        setLoading(true);
         try {
-            const token = await authentication(email);
-            console.log(token)
+            const token: string = await authentication(email);
             setUser({
                 email: email,
                 name: name,
-                token: token,
-            })
-        } catch (error) {
-            setErro('Ocorreu uma falha');
-            console.log(error)
+                token: `Bearer ${token}`
+            });
+        } catch (e) {
+            console.log(e);
         }
-        setLoading(false);
-    }
-
-    if (user) {
-        console.log('tem token')
-    }
-    else {
-        console.log('nada de token')
     }
 
     return (
@@ -58,9 +57,6 @@ const LoginScreen = () => {
                     placeholder="Informe seu nome"
                 />
                 <Button onPress={handleLogin} title={'Login'}>
-                    {loading ? (
-                        <ActivityIndicator size={"small"} color={"#fff"} />
-                    ) : (<LoginButton>Fazer Login</LoginButton>)}
                 </Button>
             </Container>
         </Background>
