@@ -5,6 +5,7 @@ import { Background, Container, Input, LoginButton } from "./style";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { authentication } from "../../services/auth-service";
 import { User } from "../../types/routes";
+import apiClient from "../../services/api-service";
 
 const LoginScreen = () => {
 
@@ -36,8 +37,9 @@ const LoginScreen = () => {
             setUser({
                 email: email,
                 name: name,
-                token: `Bearer ${token}`
+                token: token
             });
+            apiClient.defaults.headers.common = { 'Authorization': `Bearer ${token}` }
         } catch (e) {
             console.log(e);
         }
