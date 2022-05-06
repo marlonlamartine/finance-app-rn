@@ -4,7 +4,7 @@ export interface ExpensesProps {
     date: string;
     item: string;
     value: number;
-    additionalInfo: object;
+    additionalInfo?: object;
 }
 
 export type ExpenseCardProps = {

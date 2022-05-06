@@ -7,7 +7,7 @@ import { authentication } from "../../services/auth-service";
 import { User } from "../../types/routes";
 import apiClient from "../../services/api-service";
 
-const LoginScreen = () => {
+const LoginScreen: React.FC = ({ }) => {
 
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');

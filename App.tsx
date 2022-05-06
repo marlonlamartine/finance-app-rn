@@ -8,16 +8,18 @@
  * @format
  */
 
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { RoutesNavigator } from './src/routes';
 import { AuthProvider } from './src/contexts/auth';
+import { EditProvider } from './src/contexts/edit';
 
 const App = () => {
 
   return (
     <AuthProvider>
-      <RoutesNavigator />
+      <EditProvider>
+        <RoutesNavigator />
+      </EditProvider>
     </AuthProvider>
   );
 };

@@ -2,9 +2,9 @@ import { ButtonsView, Container, DataExpense, DateText, Delete, DeleteIcon, Edit
 import React from "react";
 import { ExpenseCardProps } from "../../types/expenses";
 
-const ExpenseCard: React.FC<ExpenseCardProps> = props => {
+const ExpenseCard: React.FC<ExpenseCardProps> = ({ item, value, date, onPressEdit, onPressDelete }) => {
 
-    const { item, value, date, onPressEdit, onPressDelete } = props;
+
 
     function formatDate(date: Date) {
         return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;

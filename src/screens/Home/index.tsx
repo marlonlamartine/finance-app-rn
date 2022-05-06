@@ -3,15 +3,16 @@ import React, { useEffect, useState } from "react";
 import { FlatList, Text, View } from "react-native";
 import ExpenseCard from "../../components/ExpenseCard";
 import { useAuthContext } from "../../contexts/auth";
+import { useEditContext } from "../../contexts/edit";
 import { ExpenseDelete, ExpenseListGet } from "../../services/expense-service";
 import { ExpensesProps } from "../../types/expenses";
 import { AddExpense, Container, ExpensesBoard, GreetingText, MoneyText, SecondText, UserCard } from "./style"
 
 
-const HomeScreen = () => {
+const HomeScreen: React.FC = ({ }) => {
 
     const { user } = useAuthContext();
-    const [total, setTotal] = useState(0)
+    const { expense, setExpense } = useEditContext();
     const [expensesList, setExpensesList] = useState<ExpensesProps[]>([]);
     const navigation = useNavigation();
 
@@ -33,9 +34,18 @@ const HomeScreen = () => {
         }
     }
 
-    async function editExpense(item: ExpensesProps) {
-        //const getTotal = expensesList.map((item) => item.value).reduce((prev, curr) => prev + curr, 0)
-        //setTotal(getTotal)
+    const editExpense = (item: ExpensesProps) => {
+        if (item) {
+            setExpense({
+                _id: item._id,
+                date: item.date,
+                item: item.item,
+                value: item.value,
+
+            });
+        }
+
+        navigation.dispatch(CommonActions.navigate('EditExpense'));
     }
 
     useEffect(() => {
